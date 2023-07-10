@@ -66,7 +66,7 @@ server = Server(ocr=args.ocr, det=args.det, old=args.old)
 
 def get_img(request, img_type='file', img_name='image'):
     if img_type == 'b64':
-        img = base64.b64decode(request.get_data()) # 
+        img = base64.b64decode(request.get_data()) #
         try: # json str of multiple images
             dic = json.loads(img)
             img = base64.b64decode(dic.get(img_name).encode())
@@ -80,7 +80,7 @@ def get_img(request, img_type='file', img_name='image'):
 def set_ret(result, ret_type='text'):
     if ret_type == 'json':
         if isinstance(result, Exception):
-            return json.dumps({"status": 200, "result": "", "msg": str(result)})
+            return json.dumps({"status": 400, "result": "", "msg": str(result)})
         else:
             return json.dumps({"status": 200, "result": result, "msg": ""})
         # return json.dumps({"succ": isinstance(result, str), "result": str(result)})
@@ -96,6 +96,8 @@ def set_ret(result, ret_type='text'):
 def ocr(opt, img_type='file', ret_type='text'):
     try:
         img = get_img(request, img_type)
+        print(123)
+        print(img)
         if opt == 'ocr':
             result = server.classification(img)
         elif opt == 'det':
